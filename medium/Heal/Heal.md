@@ -149,7 +149,7 @@ Unfortunately, this is the same password that was used to log in to the panel on
 
 ![image](images/20250404213858.png)
 
-Посмотрим есть ли локально запущенные сервисы
+Let's see if there are any locally running services.
 ```bash
 netstat -lntp
 ```

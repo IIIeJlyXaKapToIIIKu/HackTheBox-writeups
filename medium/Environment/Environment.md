@@ -26,6 +26,7 @@ Scan for other directories
 gobuster dir -u http://environment.htb/ --wordlist=/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 ![image](images/20250625182240.png)
+
 If we go to the directory with code `405`, we will see the following:
 ![image](images/20250625182442.png)
 ![image](images/20250625182459.png)
@@ -109,7 +110,7 @@ sudo ncat -lvnp 4444
 ```
 Find the first flag
 
-![image](images/20250628142820.png)
+---
 
 Spawn a normal TTY:
 ```bash
@@ -129,10 +130,10 @@ In the home directory `Hish` there is a directory `backup`, which contains the f
 
 `.gpg` is an object in **OpenPGP** format. 
 
-| Type                       | Description                                                                         | How to identify                                                                                                  |
-| ------------------------- | ------------------------------------------------- ------------------------------- | ------------------------------------------------------------------- -------------------------------------------- |
-| **Encrypted container** | Any file (zip, tar, txt, etc.) has been encrypted with someone's PGP key or password. | `file keyvault.gpg` outputs “data” or “PGP symmetric encrypted data” / “PGP public key encrypted session key”. |
-| **Key vault**    | Contains the PGP key itself (public or private). | `gpg --list-packets keyvault.gpg` will show the `public key` / `secret key` packets. |
+| Type                  | Description                                                                         | How to identify                                                                                                  |
+| :-------------------- | :---------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| **Encrypted container** | Any file (zip, tar, txt, etc.) has been encrypted with someone's PGP key or password. | `file keyvault.gpg` outputs "data" or "PGP symmetric encrypted data" / "PGP public key encrypted session key".    |
+| **Key vault**         | Contains the PGP key itself (public or private).                                    | `gpg --list-packets keyvault.gpg` will show the `public key` / `secret key` packets.                             |
 Let's look at the contents of the home directory `hish`:
 
 ![image](images/20250628150917.png)
@@ -197,5 +198,4 @@ Run the authorized script:
 ```bash
 sudo /usr/bin/systeminfo
 ```
-
-![image](images/20250628153811.png)
+And we got `root` flag!

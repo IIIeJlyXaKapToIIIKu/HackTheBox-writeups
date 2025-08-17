@@ -75,7 +75,7 @@ The above script will create the `exploit.h5` file, which will execute the seria
 
 We execute this script inside the container. After that, the file `exploit.h5` is created, which we must send to the server:
 
-![image](images/20250625132734.png|500)
+![image](images/20250625132734.png)
 
 Click `View Predictions`:
 
